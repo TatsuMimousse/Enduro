@@ -26,7 +26,6 @@ try {
         $password,
         $options
     );
-    echo "Connected successfully";
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }
