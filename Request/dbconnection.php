@@ -1,21 +1,24 @@
 <?php
 
-$host = '10.0.2.15:1433';
+$host = 'localhost';
+$port = '1433';
 $dbname = 'Enduro';
 $user = 'sa';
 $password = 'rg';
 $options = [
-    PDO::ATTR_EMULATE_PREPARES => false,
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_TIMEOUT => 60
 ];
 
 try {
     $pdo = new PDO(
-        "mysql:host=$host; dbname=$dbname; charset=utf8",
+        "sqlsrv:Server=$host,$port;Database=$dbname",
         $user,
         $password,
         $options
     );
+    echo "Connected successfully";
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }
