@@ -4,7 +4,25 @@ const app = Vue.createApp({
     data() {
         return {
             searchString: null,
-            driver: null,
+            driver: {
+                IdDriver: null,
+                Name: null,
+                Surname: null,
+                Birthdate: null,
+                IdCountry: null,
+                Country: null,
+                PostalCode: null,
+                City: null,
+                Number: null,
+                Street: null,
+                Payed: null,
+                DepositReturned: null,
+                BibNumber: null,
+                IdColor: null,
+                BibColorLabel: null,
+                BackgroundColor: null,
+                TextColor: null
+            },
             tickets: []
         }
     },
@@ -82,10 +100,10 @@ const app = Vue.createApp({
             return this.driver.TextColor;
         },
         fullAddress(){
-            return `${this.driver.number} ${this.driver.street} - ${this.driver.postalCode} ${this.driver.city} - ${this.driver.country}`;
+            return this.driver != null && this.driver.idDriver != null ? `${this.driver.number} ${this.driver.street} - ${this.driver.postalCode} ${this.driver.city} - ${this.driver.country}` : "";
         },
         shouldDisplayBib(){
-            return this.driver != null;
+            return this.driver != null && this.driver.bibNumber != null;
         }
     },
     mounted() {
