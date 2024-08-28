@@ -1,8 +1,6 @@
 "use strict";
 
-import { createApp } from 'vue';
-
-const app = createApp({
+const app = Vue.createApp({
     data() {
         return {
             searchString: "",
