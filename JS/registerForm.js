@@ -1,5 +1,7 @@
 "use strict";
 
+const serverAddress = "http://192.168.0.203/Enduro/Request/";
+
 const app = Vue.createApp({
     data() {
         return {
@@ -47,7 +49,7 @@ const app = Vue.createApp({
         searchDrivers() {
             let formData = new FormData();
             formData.append("searchString", this.searchString);
-            fetch(`../request/DriverSearch`, { method: 'POST', body: formData })
+            fetch(`${serverAddress}DriverSearch`, { method: 'POST', body: formData })
                 .then(response => {
                     if (!response.ok) {
                         return response.text().then(html => {
@@ -74,7 +76,7 @@ const app = Vue.createApp({
                 };
         },
         getDriverTickets(){
-            fetch(`../request/GetDriverTickets?idDriver=${this.currentDriver.IdDriver}`, { method: 'GET' })
+            fetch(`${serverAddress}GetDriverTickets?idDriver=${this.currentDriver.IdDriver}`, { method: 'GET' })
                 .then(response => {
                     if (!response.ok) {
                         return response.text().then(html => {
@@ -114,7 +116,7 @@ const app = Vue.createApp({
             };
         },
         getCountries(){
-            fetch(`../request/GetCountries`, { method: 'GET' })
+            fetch(`${serverAddress}GetCountries`, { method: 'GET' })
                 .then(response => {
                     if (!response.ok) {
                         return response.text().then(html => {
@@ -132,7 +134,7 @@ const app = Vue.createApp({
                 });
         },
         getBibColors(){
-            fetch(`../request/GetBibColors`, { method: 'GET' })
+            fetch(`${serverAddress}GetBibColors`, { method: 'GET' })
                 .then(response => {
                     if (!response.ok) {
                         return response.text().then(html => {
@@ -150,7 +152,7 @@ const app = Vue.createApp({
                 });
         },
         getVehiculeTypes(){
-            fetch(`../request/GetVehiculeTypes`, { method: 'GET' })
+            fetch(`${serverAddress}GetVehiculeTypes`, { method: 'GET' })
                 .then(response => {
                     if (!response.ok) {
                         return response.text().then(html => {
@@ -168,7 +170,7 @@ const app = Vue.createApp({
                 });
         },
         getBibColor(){
-            fetch(`../request/GetVehiculeTypes?bibNumber=${this.bibAttribution.bibNumber}`, { method: 'GET' })
+            fetch(`${serverAddress}GetVehiculeTypes?bibNumber=${this.bibAttribution.bibNumber}`, { method: 'GET' })
                 .then(response => {
                     if (!response.ok) {
                         return response.text().then(html => {
@@ -197,7 +199,7 @@ const app = Vue.createApp({
             formData.append("city", this.currentDriver.city);
             formData.append("number", this.currentDriver.number);
             formData.append("street", this.currentDriver.street);
-            fetch(`../request/UpsertDriver`, { method: 'POST', body: formData })
+            fetch(`${serverAddress}UpsertDriver`, { method: 'POST', body: formData })
                 .then(() => {
                     toastr.success("Yaaaayyyyy", "Nouveau coureur enregistré");
                 })
@@ -212,7 +214,7 @@ const app = Vue.createApp({
             formData.append("plate", this.newVehicule.plate);
             formData.append("idType", this.newVehicule.idType);
             formData.append("ticketNumber", this.newVehicule.ticketNumber);
-            fetch(`../request/InsertVehicule`, { method: 'POST', body: formData })
+            fetch(`${serverAddress}InsertVehicule`, { method: 'POST', body: formData })
                 .then(() => {
                     toastr.success("Yaaaayyyyy", "Véhicule enregistré");
                 })
@@ -225,7 +227,7 @@ const app = Vue.createApp({
             let formData = new FormData();
             formData.append("idDriver", this.currentDriver.idDriver);
             formData.append("plate", this.bibAttribution.bibNumber);
-            fetch(`../request/BibAttribution`, { method: 'POST', body: formData })
+            fetch(`${serverAddress}BibAttribution`, { method: 'POST', body: formData })
                 .then(() => {
                     toastr.success("Yaaaayyyyy", "Dossard assigné au coureur");
                 })

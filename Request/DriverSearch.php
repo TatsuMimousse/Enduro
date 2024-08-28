@@ -1,7 +1,7 @@
 <?php
 include "dbconnection.php";
 
-$request = "SELECT unique D.Id as IdDriver, Name, Surname, Birthdate, IdCountry, C.Name as Country, PostalCode, City, D.Number, Street, Payed, DepositReturned, 
+$request = "SELECT distinct D.Id as IdDriver, Name, Surname, Birthdate, IdCountry, C.Name as Country, PostalCode, City, D.Number, Street, Payed, DepositReturned, 
                    B.Number as BibNumber, B.IdColor, BC.Label as BibColorLabel, BC.BackgroundColor, BC.TextColor FROM dbo.Drivers D 
             LEFT JOIN dbo.Bibs B on B.idDriver = D.Id 
             LEFT JOIN dbo.BibColors BC on BC.Id = B.IdColor                                                                                                                                                 

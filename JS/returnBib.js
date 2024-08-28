@@ -1,5 +1,7 @@
 "use strict";
 
+const serverAddress = "http://192.168.0.203/Enduro/Request/";
+
 const app = Vue.createApp({
     data() {
         return {
@@ -30,7 +32,7 @@ const app = Vue.createApp({
         searchBibs() {
             let formData = new FormData();
             formData.append("bibNumber", this.searchString);
-            fetch(`../request/DriverSearch`, { method: 'POST', body: formData })
+            fetch(`${serverAddress}DriverSearch`, { method: 'POST', body: formData })
                 .then(response => {
                     if (!response.ok) {
                         return response.text().then(html => {
@@ -54,7 +56,7 @@ const app = Vue.createApp({
                 });
         },
         getDriverTickets(){
-            fetch(`../request/GetDriverTickets?idDriver=${this.driver.Id}`, { method: 'GET' })
+            fetch(`${serverAddress}GetDriverTickets?idDriver=${this.driver.Id}`, { method: 'GET' })
                 .then(response => {
                     if (!response.ok) {
                         return response.text().then(html => {
@@ -75,7 +77,7 @@ const app = Vue.createApp({
             let formData = new FormData();
             formData.append("idDriver", this.driver.idDriver);
             formData.append("depositReturned", 1);
-            fetch(`../request/ReturnDeposit`, { method: 'POST', body: formData })
+            fetch(`${serverAddress}ReturnDeposit`, { method: 'POST', body: formData })
                 .then(() => {
                     toastr["success"]("Yaaaayyyyy", "La caution a bien été rendue");
                     this.searchBibs(); // Met à jour les informations du coureur
