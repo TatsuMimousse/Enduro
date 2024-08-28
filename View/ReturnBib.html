@@ -11,6 +11,9 @@
     <!-- Vue -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.30/vue.global.min.js"></script>
 
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
     <!-- Toastr -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
@@ -56,7 +59,7 @@
 
             <div class="row mb-3">
                 <div class="col-4">
-                    <div id="bib" :style="{ backgroundColor: computedBackgroundColor, text: computedTextColor  }">{{ driver.bibNumber }}</div>
+                    <div id="bib" :style="{ backgroundColor: computedBackgroundColor, text: computedTextColor  }" v-if="shouldDisplayBib">{{ driver.bibNumber }}</div>
                 </div>
                 <div class="col-8">
                     <div class="row mb-3">

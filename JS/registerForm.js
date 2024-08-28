@@ -48,27 +48,47 @@ const app = Vue.createApp({
             let formData = new FormData();
             formData.append("searchString", this.searchString);
             fetch(`../request/DriverSearch`, { method: 'POST', body: formData })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(html => {
+                            throw new Error(`Error ${response.status}: ${response.statusText} - ${html}`);
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     this.drivers = data;
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    toastr["error"]("Erreur", error);
+                    toastr.error("Erreur", error);
                 });
         },
         selectDriver(driver) {
             this.currentDriver = driver;
+            if(driver.bibNumber != null)
+                this.currentBibColor = {
+                    number: driver.BibNumber,
+                    backgroundColor: driver.BackgroundColor,
+                    textColor: driver.TextColor,
+                };
         },
         getDriverTickets(){
             fetch(`../request/GetDriverTickets?idDriver=${this.currentDriver.IdDriver}`, { method: 'GET' })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(html => {
+                            throw new Error(`Error ${response.status}: ${response.statusText} - ${html}`);
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     this.tickets = data;
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    toastr["error"]("Erreur", error);
+                    toastr.error("Erreur", error);
                 });
         },
         initForm(){
@@ -95,46 +115,74 @@ const app = Vue.createApp({
         },
         getCountries(){
             fetch(`../request/GetCountries`, { method: 'GET' })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(html => {
+                            throw new Error(`Error ${response.status}: ${response.statusText} - ${html}`);
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     this.countries = data;
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    toastr["error"]("Erreur", error);
+                    toastr.error("Erreur", error);
                 });
         },
         getBibColors(){
             fetch(`../request/GetBibColors`, { method: 'GET' })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(html => {
+                            throw new Error(`Error ${response.status}: ${response.statusText} - ${html}`);
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     this.bibColors = data;
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    toastr["error"]("Erreur", error);
+                    toastr.error("Erreur", error);
                 });
         },
         getVehiculeTypes(){
             fetch(`../request/GetVehiculeTypes`, { method: 'GET' })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(html => {
+                            throw new Error(`Error ${response.status}: ${response.statusText} - ${html}`);
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     this.vehiculeTypes = data;
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    toastr["error"]("Erreur", error);
+                    toastr.error("Erreur", error);
                 });
         },
         getBibColor(){
             fetch(`../request/GetVehiculeTypes?bibNumber=${this.bibAttribution.bibNumber}`, { method: 'GET' })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(html => {
+                            throw new Error(`Error ${response.status}: ${response.statusText} - ${html}`);
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     this.currentBibColor = data;
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    toastr["error"]("Erreur", error);
+                    toastr.error("Erreur", error);
                 });
         },
         upsertDriver(){
@@ -151,11 +199,11 @@ const app = Vue.createApp({
             formData.append("street", this.currentDriver.street);
             fetch(`../request/UpsertDriver`, { method: 'POST', body: formData })
                 .then(() => {
-                    toastr["success"]("Yaaaayyyyy", "Nouveau coureur enregistré");
+                    toastr.success("Yaaaayyyyy", "Nouveau coureur enregistré");
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    toastr["error"]("Erreur", error);
+                    toastr.error("Erreur", error);
                 });
         },
         addVehicule(){
@@ -166,11 +214,11 @@ const app = Vue.createApp({
             formData.append("ticketNumber", this.newVehicule.ticketNumber);
             fetch(`../request/InsertVehicule`, { method: 'POST', body: formData })
                 .then(() => {
-                    toastr["success"]("Yaaaayyyyy", "Véhicule enregistré");
+                    toastr.success("Yaaaayyyyy", "Véhicule enregistré");
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    toastr["error"]("Erreur", error);
+                    toastr.error("Erreur", error);
                 });
         },
         asignBib(){
@@ -179,23 +227,23 @@ const app = Vue.createApp({
             formData.append("plate", this.bibAttribution.bibNumber);
             fetch(`../request/BibAttribution`, { method: 'POST', body: formData })
                 .then(() => {
-                    toastr["success"]("Yaaaayyyyy", "Dossard assigné au coureur");
+                    toastr.success("Yaaaayyyyy", "Dossard assigné au coureur");
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    toastr["error"]("Erreur", error);
+                    toastr.error("Erreur", error);
                 });
         }
     },
     computed : {
         shouldDisplayPayedBadge(){
-            return this.currentDriver != null && this.currentDriver.payed;
+            return this.currentDriver != null && this.currentDriver.IdDriver != null && this.currentDriver.payed;
         },
         shouldDisplayNotPayedBadge(){
-            return this.currentDriver != null && !this.currentDriver.payed;
+            return this.currentDriver != null && this.currentDriver.IdDriver != null && !this.currentDriver.payed;
         },
         shouldDisplayDepositReturnedBadge(){
-            return this.currentDriver != null && this.currentDriver.depositReturned;
+            return this.currentDriver != null && this.currentDriver.IdDriver != null && this.currentDriver.depositReturned;
         },
         selectedPrice() {
             const selectedType = this.vehiculeTypes.find(type => type.Id === this.newVehicule.idType);
@@ -209,13 +257,15 @@ const app = Vue.createApp({
         },
         computedTextColor(){
             return this.currentBibColor.TextColor;
+        },
+        shouldDisplayBib(){
+            return this.currentBibColor != null && this.currentBibColor.Number != null;
+        },
+        disallowAssignBib(){
+            return this.currentDriver == null || !this.currentDriver.payed || this.tickets.length <= 0;
         }
     },
     mounted() {
-        this.initForm();
-        this.getCountries();
-        this.getBibColors();
-        this.getVehiculeTypes();
         // Toastr setup
         toastr.options = {
             "closeButton": false,
@@ -233,7 +283,11 @@ const app = Vue.createApp({
             "hideEasing": "linear",
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
-        }
+        };
+        this.initForm();
+        this.getCountries();
+        this.getBibColors();
+        this.getVehiculeTypes();
     }
 });
 

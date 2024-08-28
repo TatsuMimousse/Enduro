@@ -13,7 +13,14 @@ const app = Vue.createApp({
             let formData = new FormData();
             formData.append("bibNumber", this.searchString);
             fetch(`../request/DriverSearch`, { method: 'POST', body: formData })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(html => {
+                            throw new Error(`Error ${response.status}: ${response.statusText} - ${html}`);
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if(data != null){
                         this.driver = data;
@@ -30,7 +37,14 @@ const app = Vue.createApp({
         },
         getDriverTickets(){
             fetch(`../request/GetDriverTickets?idDriver=${this.driver.Id}`, { method: 'GET' })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(html => {
+                            throw new Error(`Error ${response.status}: ${response.statusText} - ${html}`);
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     this.tickets = data;
                 })
@@ -69,6 +83,9 @@ const app = Vue.createApp({
         },
         fullAddress(){
             return `${this.driver.number} ${this.driver.street} - ${this.driver.postalCode} ${this.driver.city} - ${this.driver.country}`;
+        },
+        shouldDisplayBib(){
+            return this.driver != null;
         }
     },
     mounted() {

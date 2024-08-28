@@ -11,6 +11,9 @@
     <!-- Vue -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.30/vue.global.min.js"></script>
 
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
     <!-- Toastr -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
@@ -257,7 +260,7 @@
                     </div>
                 </div>
                 <div class="row justify-content-end">
-                    <button type="submit" class="col-3 btn btn-primary" @click="addVehicule">Ajouter</button>
+                    <button type="submit" class="col-3 btn btn-primary" @click="addVehicule" :disabled="hasCurrentDriver">Ajouter</button>
                 </div>
             </div>
 
@@ -270,13 +273,13 @@
                         <label class="col-form-label">Numéro :</label>
                     </div>
                     <div class="col-10">
-                        <input type="text" class="form-control" id="bibNumber" placeholder="250" :disabled="shouldDisplayPayedBadge" @blur="getBibColor"/>
+                        <input type="text" class="form-control" id="bibNumber" placeholder="250" :disabled="disallowAssignBib" @blur="getBibColor"/>
                     </div>
                 </div>
                 <div class="row justify-content-end">
-                    <button type="submit" class="col-3 btn btn-primary" :disabled="shouldDisplayPayedBadge" @click="asignBib">Assigner</button>
+                    <button type="submit" class="col-3 btn btn-primary" :disabled="disallowAssignBib" @click="asignBib">Assigner</button>
                 </div>
-                <div id="bib" :style="{ backgroundColor: computedBackgroundColor, text: computedTextColor  }">{{ currentBibColor.number }}</div>
+                <div id="bib" :style="{ backgroundColor: computedBackgroundColor, text: computedTextColor  }" v-if="shouldDisplayBib">{{ currentBibColor.number }}</div>
             </div>
         </div>
     </div>
